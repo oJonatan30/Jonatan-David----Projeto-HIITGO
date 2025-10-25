@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>HIITFit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>HIITGO 💪</h1>
+
+  <div id="treino">
+    <h2 id="exercicio">Clique em "Iniciar"</h2>
+    <p id="cronometro">00:00</p>
+    <p id="progresso"></p>
+    <button onclick="iniciarTreino()">Iniciar Treino</button>
+  </div>
+
+  <section id="personalizado">
+    <h2>Monte seu treino personalizado</h2>
+    <form id="form-treino">
+      <label for="nome-exercicio">Exercício:</label>
+      <input type="text" id="nome-exercicio" required>
+      <label for="tempo-exercicio">Tempo (segundos):</label>
+      <input type="number" id="tempo-exercicio" required>
+      <button type="button" onclick="adicionarExercicio()">Adicionar</button>
+    </form>
+
+    <ul id="lista-personalizada"></ul>
+    <button onclick="iniciarTreinoPersonalizado()">Iniciar Treino Personalizado</button>
+    </section>
+
+  <ul id="lista-exercicios">
+    <li>Polichinelo - 30s</li>
+    <li>Descanso - 15s</li>
+    <li>Agachamento - 30s</li>
+    <li>Descanso - 15s</li>
+    <li>Corrida no lugar - 30s</li>
+  </ul>
+
+  <!-- Tela final de encerramento do treino -->
+  <div id="final-treino" style="display: none;">
+    <h2>🏁 Parabéns, treino concluído!</h2>
+    <p>Você mandou bem! 💪</p>
+    <button onclick="reiniciarTreino()">Novo Treino</button>
+  </div>
+  <audio id="galo-audio" src="galo.mp3" preload="auto"></audio>
+  <script src="script.js"></script>
+</body>
+</html>
