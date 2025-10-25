@@ -2,19 +2,21 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>HIITFit</title>
+  <title>HIITGO 💪</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>HIITGO 💪</h1>
 
+  <!-- Treino padrão -->
   <div id="treino">
     <h2 id="exercicio">Clique em "Iniciar"</h2>
     <p id="cronometro">00:00</p>
     <p id="progresso"></p>
-    <button onclick="iniciarTreino()">Iniciar Treino</button>
+    <button onclick="iniciarTreino()">Iniciar Treino Padrão</button>
   </div>
 
+  <!-- Treino personalizado -->
   <section id="personalizado">
     <h2>Monte seu treino personalizado</h2>
     <form id="form-treino">
@@ -27,8 +29,19 @@
 
     <ul id="lista-personalizada"></ul>
     <button onclick="iniciarTreinoPersonalizado()">Iniciar Treino Personalizado</button>
-    </section>
 
+    <!-- Treino intervalado -->
+    <h3>Treino Intervalado</h3>
+    <label for="tempo-tiro">Tempo do tiro (segundos):</label>
+    <input type="number" id="tempo-tiro" required>
+    <label for="tempo-descanso">Tempo de descanso (segundos):</label>
+    <input type="number" id="tempo-descanso" required>
+    <label for="quantidade-ciclos">Quantidade de ciclos:</label>
+    <input type="number" id="quantidade-ciclos" required>
+    <button onclick="iniciarTreinoIntervalado()">Iniciar Treino Intervalado</button>
+  </section>
+
+  <!-- Lista de exercícios padrão -->
   <ul id="lista-exercicios">
     <li>Polichinelo - 30s</li>
     <li>Descanso - 15s</li>
@@ -43,7 +56,11 @@
     <p>Você mandou bem! 💪</p>
     <button onclick="reiniciarTreino()">Novo Treino</button>
   </div>
+
+  <!-- Som do galo -->
   <audio id="galo-audio" src="galo.mp3" preload="auto"></audio>
+
+  <!-- Script principal -->
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,117 +1,119 @@
 /* Reset básico */
-body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #121212;
-  color: #f0f0f0;
-  text-align: center;
+  background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+  color: #333;
+  padding: 20px;
+  line-height: 1.6;
 }
 
 /* Título principal */
 h1 {
-  margin-top: 30px;
-  font-size: 2.5em;
-  color: #00ff88;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #2b6cb0;
 }
 
-/* Seção de treino */
-#treino {
-  margin: 20px auto;
+/* Seções */
+section, #treino, #final-treino {
+  background-color: #fff;
+  border-radius: 8px;
   padding: 20px;
-  background-color: #1e1e1e;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-}
-
-/* Cronômetro */
-#cronometro {
-  font-size: 3em;
-  margin: 20px 0;
-  color: #ffcc00;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 /* Botões */
 button {
-  padding: 10px 20px;
-  font-size: 1em;
-  background-color: #00ff88;
+  background-color: #2b6cb0;
+  color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 16px;
+  border-radius: 6px;
   cursor: pointer;
-  margin: 10px;
-  transition: background-color 0.3s;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #00cc66;
+  background-color: #2c5282;
 }
 
-button:focus {
-  outline: 2px solid #00ff88;
-  outline-offset: 2px;
-}
-
-/* Formulário personalizado */
-#form-treino {
-  margin-top: 20px;
+/* Inputs e labels */
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
 }
 
 input {
+  width: 100%;
   padding: 8px;
-  margin: 5px;
-  border-radius: 5px;
-  border: none;
-  width: 80%;
-  max-width: 300px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Cronômetro e progresso */
+#cronometro {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0;
+  color: #2b6cb0;
+}
+
+#progresso {
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 10px;
 }
 
 /* Lista de exercícios */
 ul {
-  list-style: none;
-  padding: 0;
+  list-style-type: none;
+  padding-left: 0;
   margin-top: 10px;
 }
 
 li {
-  background-color: #2a2a2a;
-  margin: 5px auto;
-  padding: 10px;
-  border-radius: 5px;
-  width: 90%;
-  max-width: 400px;
-}
-
-li button {
-  margin-left: 10px;
-  background-color: #ff4444;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-li button:hover {
-  background-color: #cc0000;
+  background-color: #edf2f7;
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 4px;
 }
 
 /* Tela final */
-#final-treino {
+#final-treino h2 {
   text-align: center;
-  background-color: #f0f8ff;
-  color: #121212;
-  padding: 30px;
-  margin: 30px auto;
-  border-radius: 10px;
-  font-size: 1.2em;
-  max-width: 400px;
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-  animation: aparecer 0.6s ease-in-out;
+  color: #38a169;
 }
 
-@keyframes aparecer {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+#final-treino p {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  button {
+    width: 100%;
+  }
 }

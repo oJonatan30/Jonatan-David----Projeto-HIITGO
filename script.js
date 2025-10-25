@@ -1,7 +1,9 @@
 const galo = document.getElementById("galo-audio");
+let intervalo;
+let indice = 0;
+let treino = [];
 
-// Lista de exercícios padrão
-const treino = [
+const treinoPadrao = [
   { nome: "Polichinelo", tempo: 30 },
   { nome: "Descanso", tempo: 15 },
   { nome: "Agachamento", tempo: 30 },
@@ -9,27 +11,59 @@ const treino = [
   { nome: "Corrida no lugar", tempo: 30 }
 ];
 
-let indice = 0;
-let tempoRestante = 0;
-let intervalo;
+function formatarTempo(segundos) {
+  const minutos = Math.floor(segundos / 60);
+  const restoSegundos = segundos % 60;
+  return `${String(minutos).padStart(2, '0')}:${String(restoSegundos).padStart(2, '0')}`;
+}
 
-// Inicia o treino padrão
 function iniciarTreino() {
+  treino = treinoPadrao;
   indice = 0;
+  iniciarExecucao();
+}
+
+function iniciarTreinoPersonalizado() {
+  const lista = document.querySelectorAll("#lista-personalizada li");
+  if (lista.length === 0) {
+    alert("Adicione pelo menos um exercício personalizado.");
+    return;
+  }
+
+  treino = [];
+  lista.forEach(item => {
+    const partes = item.textContent.split(" - ");
+    const nome = partes[0];
+    const tempo = parseInt(partes[1]);
+    treino.push({ nome, tempo });
+  });
+
+  indice = 0;
+  iniciarExecucao();
+}
+
+function iniciarExecucao() {
+  clearInterval(intervalo);
+  document.getElementById("final-treino").style.display = "none";
   executarExercicio();
 }
 
-// Executa cada exercício do treino padrão
 function executarExercicio() {
   if (indice >= treino.length) {
-    document.getElementById("exercicio").textContent = "Treino finalizado! 🎉";
+    document.getElementById("exercicio").textContent = "Treino personalizado finalizado!";
     document.getElementById("cronometro").textContent = "00:00";
+    document.getElementById("progresso").textContent = "";
+    document.getElementById("final-treino").style.display = "block";
     return;
   }
 
   const atual = treino[indice];
-  tempoRestante = atual.tempo;
+  let tempoRestante = atual.tempo;
   document.getElementById("exercicio").textContent = atual.nome;
+  document.getElementById("progresso").textContent = `Exercício ${indice + 1} de ${treino.length}`;
+  galo.pause();
+  galo.currentTime = 0;
+  galo.play();
 
   intervalo = setInterval(() => {
     document.getElementById("cronometro").textContent = formatarTempo(tempoRestante);
@@ -43,98 +77,86 @@ function executarExercicio() {
   }, 1000);
 }
 
-// Formata o tempo em mm:ss
-function formatarTempo(segundos) {
-  const minutos = Math.floor(segundos / 60);
-  const seg = segundos % 60;
-  return `${String(minutos).padStart(2, '0')}:${String(seg).padStart(2, '0')}`;
-}
-
-// Lista de treino personalizado
-let treinoPersonalizado = [];
-
-// Adiciona exercício à lista personalizada
 function adicionarExercicio() {
   const nome = document.getElementById("nome-exercicio").value;
   const tempo = parseInt(document.getElementById("tempo-exercicio").value);
 
   if (!nome || isNaN(tempo) || tempo <= 0) {
-    alert("Preencha os campos corretamente.");
+    alert("Preencha o nome e tempo corretamente.");
     return;
   }
 
-  treinoPersonalizado.push({ nome, tempo });
-  atualizarLista();
+  const lista = document.getElementById("lista-personalizada");
+  const item = document.createElement("li");
+  item.textContent = `${nome} - ${tempo}`;
+  lista.appendChild(item);
 
   document.getElementById("nome-exercicio").value = "";
   document.getElementById("tempo-exercicio").value = "";
 }
 
-// Atualiza a lista visual
-function atualizarLista() {
-  const lista = document.getElementById("lista-personalizada");
-  lista.innerHTML = "";
-  treinoPersonalizado.forEach((ex, i) => {
-    lista.innerHTML += `
-      <li>
-        ${i + 1}. ${ex.nome} - ${ex.tempo}s
-        <button onclick="removerExercicio(${i})">Remover</button>
-      </li>
-    `;
-  });
-}
-
-// Remove exercício da lista
-function removerExercicio(indice) {
-  treinoPersonalizado.splice(indice, 1);
-  atualizarLista();
-}
-
-// Inicia o treino personalizado
-function iniciarTreinoPersonalizado() {
-  if (treinoPersonalizado.length === 0) {
-    alert("Adicione pelo menos um exercício.");
-    return;
-  }
-
-  indice = 0;
-  tempoRestante = treinoPersonalizado[indice].tempo;
-
-  document.getElementById("exercicio").textContent = treinoPersonalizado[indice].nome;
-  document.getElementById("progresso").textContent = `Exercício ${indice + 1} de ${treinoPersonalizado.length}`;
-
-  intervalo = setInterval(() => {
-    document.getElementById("cronometro").textContent = formatarTempo(tempoRestante);
-    tempoRestante--;
-
-    if (tempoRestante < 0) {
-      indice++;
-
-      if (indice >= treinoPersonalizado.length) {
-        clearInterval(intervalo);
-        document.getElementById("exercicio").textContent = "Treino personalizado finalizado! 🎉";
-        document.getElementById("cronometro").textContent = "00:00";
-        document.getElementById("final-treino").style.display = "block";
-      } else {
-        galo.pause();
-        galo.currentTime = 0;
-        galo.play();
-
-        tempoRestante = treinoPersonalizado[indice].tempo;
-        document.getElementById("exercicio").textContent = treinoPersonalizado[indice].nome;
-        document.getElementById("progresso").textContent = `Exercício ${indice + 1} de ${treinoPersonalizado.length}`;
-      }
-    }
-  }, 1000);
-}
-
-// Reinicia o treino e limpa tudo
 function reiniciarTreino() {
   clearInterval(intervalo);
   document.getElementById("final-treino").style.display = "none";
   document.getElementById("exercicio").textContent = "Clique em \"Iniciar\"";
   document.getElementById("cronometro").textContent = "00:00";
   document.getElementById("progresso").textContent = "";
-  treinoPersonalizado = [];
-  atualizarLista();
+}
+
+function iniciarTreinoIntervalado() {
+  const tempoTiro = parseInt(document.getElementById("tempo-tiro").value);
+  const tempoDescanso = parseInt(document.getElementById("tempo-descanso").value);
+  const quantidadeCiclos = parseInt(document.getElementById("quantidade-ciclos").value);
+
+  if (isNaN(tempoTiro) || isNaN(tempoDescanso) || isNaN(quantidadeCiclos) ||
+      tempoTiro <= 0 || tempoDescanso <= 0 || quantidadeCiclos <= 0) {
+    alert("Preencha todos os campos corretamente.");
+    return;
+  }
+
+  let cicloAtual = 1;
+  let emTiro = true;
+  let tempoRestante = tempoTiro;
+
+  clearInterval(intervalo);
+  document.getElementById("final-treino").style.display = "none";
+  document.getElementById("exercicio").textContent = `Tiro ${cicloAtual} de ${quantidadeCiclos}`;
+  document.getElementById("progresso").textContent = "Tiro em andamento";
+  galo.pause();
+  galo.currentTime = 0;
+  galo.play();
+
+  intervalo = setInterval(() => {
+    document.getElementById("cronometro").textContent = formatarTempo(tempoRestante);
+    tempoRestante--;
+
+    if (tempoRestante < 0) {
+      if (emTiro) {
+        emTiro = false;
+        tempoRestante = tempoDescanso;
+        document.getElementById("exercicio").textContent = `Descanso ${cicloAtual} de ${quantidadeCiclos}`;
+        document.getElementById("progresso").textContent = "Descanso em andamento";
+        galo.pause();
+        galo.currentTime = 0;
+        galo.play();
+      } else {
+        cicloAtual++;
+        if (cicloAtual > quantidadeCiclos) {
+          clearInterval(intervalo);
+          document.getElementById("exercicio").textContent = "Treino intervalado finalizado! 🎉";
+          document.getElementById("cronometro").textContent = "00:00";
+          document.getElementById("progresso").textContent = "";
+          document.getElementById("final-treino").style.display = "block";
+        } else {
+          emTiro = true;
+          tempoRestante = tempoTiro;
+          document.getElementById("exercicio").textContent = `Tiro ${cicloAtual} de ${quantidadeCiclos}`;
+          document.getElementById("progresso").textContent = "Tiro em andamento";
+          galo.pause();
+          galo.currentTime = 0;
+          galo.play();
+        }
+      }
+    }
+  }, 1000);
 }
