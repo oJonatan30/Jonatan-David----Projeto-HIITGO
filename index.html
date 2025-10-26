@@ -7,8 +7,6 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <script defer>
-    let nomeUsuario = "";
-
     document.addEventListener("DOMContentLoaded", () => {
       // Alternância de abas
       const tabButtons = document.querySelectorAll('.tab-button');
@@ -38,24 +36,6 @@
         iconeTema.textContent = modoEscuroAtivo ? "light_mode" : "dark_mode";
         localStorage.setItem("tema", modoEscuroAtivo ? "escuro" : "claro");
       });
-
-      // Entrada do nome e ocultar tela de boas-vindas
-      document.getElementById("entrar-app").addEventListener("click", () => {
-        const input = document.getElementById("nome-usuario");
-        nomeUsuario = input.value.trim();
-
-        if (!nomeUsuario) {
-          alert("Por favor, digite seu nome para começar.");
-          return;
-        }
-
-        document.getElementById("boas-vindas").classList.add("fade-out");
-      });
-
-      // Função global para mensagem final
-      window.mensagemFinal = function(texto) {
-        return nomeUsuario ? `Parabéns, ${nomeUsuario}! ${texto}` : texto;
-      };
     });
   </script>
 </head>
@@ -138,5 +118,8 @@
   </div>
 
   <audio id="galo-audio" src="galo.mp3" preload="auto"></audio>
+
+  <!-- Importa o script principal -->
+  <script src="script.js"></script>
 </body>
 </html>

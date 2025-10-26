@@ -210,4 +210,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function pausarTreino() {
-    emPausa = true
+    emPausa = true;
+  }
+
+  function reiniciarTreino() {
+    clearInterval(intervalo);
+    indice = 0;
+    emPausa = false;
+    document.getElementById("final-treino").style.display = "none";
+    document.querySelector(".tab-content.active .exercicio").textContent = "Clique em \"Iniciar\"";
+    document.querySelector(".tab-content.active .cronometro").textContent = "00:00";
+    document.querySelector(".tab-content.active .progresso").textContent = "";
+  }
+
+  // 🔓 Torna as funções globais para funcionar nos botões HTML
+  window.iniciarTreino = iniciarTreino;
+  window.pausarTreino = pausarTreino;
+  window.reiniciarTreino = reiniciarTreino;
+  window.iniciarTreinoPersonalizado = iniciarTreinoPersonalizado;
+  window.iniciarTreinoIntervalado = iniciarTreinoIntervalado;
+  window.adicionarExercicio = adicionarExercicio;
+});
