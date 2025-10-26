@@ -179,14 +179,3 @@ function reiniciarTreino() {
   emPausa = false;
   indice = 0;
 }
-
-// 🌙 Modo escuro
-document.addEventListener("DOMContentLoaded", () => {
-  const botaoTema = document.getElementById("toggle-tema");
-  if (botaoTema) {
-    botaoTema.addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-    });
-  }
-});
-  
