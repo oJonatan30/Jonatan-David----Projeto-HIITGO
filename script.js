@@ -74,9 +74,9 @@ function iniciarExecucao() {
 // Executa exercício atual
 function executarExercicio() {
   if (indice >= treino.length) {
-    document.querySelector(".exercicio").textContent = "Treino finalizado!";
-    document.querySelector(".cronometro").textContent = "00:00";
-    document.querySelector(".progresso").textContent = "";
+    document.querySelector(".tab-content.active .exercicio").textContent = "Treino finalizado!";
+    document.querySelector(".tab-content.active .cronometro").textContent = "00:00";
+    document.querySelector(".tab-content.active .progresso").textContent = "";
     document.getElementById("final-treino").style.display = "block";
     return;
   }
@@ -89,15 +89,15 @@ function executarExercicio() {
 
   const atual = treino[indice];
   tempoRestante = atual.tempo;
-  document.querySelector(".exercicio").textContent = atual.nome;
-  document.querySelector(".progresso").textContent = `Exercício ${indice + 1} de ${treino.length}`;
+  document.querySelector(".tab-content.active .exercicio").textContent = atual.nome;
+  document.querySelector(".tab-content.active .progresso").textContent = `Exercício ${indice + 1} de ${treino.length}`;
   galo.pause();
   galo.currentTime = 0;
   galo.play();
 
   intervalo = setInterval(() => {
     if (!emPausa) {
-      document.querySelector(".cronometro").textContent = formatarTempo(tempoRestante);
+      document.querySelector(".tab-content.active .cronometro").textContent = formatarTempo(tempoRestante);
       tempoRestante--;
 
       if (tempoRestante < 0) {
@@ -136,15 +136,15 @@ function iniciarTreinoIntervalado() {
   gerarSegmentos(quantidadeCiclos * 2, "barra-progresso-hiit");
   clearInterval(intervalo);
   document.getElementById("final-treino").style.display = "none";
-  document.querySelector(".exercicio").textContent = `Tiro ${cicloAtual} de ${quantidadeCiclos}`;
-  document.querySelector(".progresso").textContent = "Tiro em andamento";
+  document.querySelector(".tab-content.active .exercicio").textContent = `Tiro ${cicloAtual} de ${quantidadeCiclos}`;
+  document.querySelector(".tab-content.active .progresso").textContent = "Tiro em andamento";
   galo.pause();
   galo.currentTime = 0;
   galo.play();
 
   intervalo = setInterval(() => {
     if (!emPausa) {
-      document.querySelector(".cronometro").textContent = formatarTempo(tempoRestante);
+      document.querySelector(".tab-content.active .cronometro").textContent = formatarTempo(tempoRestante);
       tempoRestante--;
 
       // Atualiza barra de progresso HIIT
@@ -158,22 +158,22 @@ function iniciarTreinoIntervalado() {
         if (emTiro) {
           emTiro = false;
           tempoRestante = tempoDescanso;
-          document.querySelector(".exercicio").textContent = `Descanso ${cicloAtual} de ${quantidadeCiclos}`;
-          document.querySelector(".progresso").textContent = "Descanso em andamento";
+          document.querySelector(".tab-content.active .exercicio").textContent = `Descanso ${cicloAtual} de ${quantidadeCiclos}`;
+          document.querySelector(".tab-content.active .progresso").textContent = "Descanso em andamento";
         } else {
           cicloAtual++;
           if (cicloAtual > quantidadeCiclos) {
             clearInterval(intervalo);
-            document.querySelector(".exercicio").textContent = "Treino intervalado finalizado! 🎉";
-            document.querySelector(".cronometro").textContent = "00:00";
-            document.querySelector(".progresso").textContent = "";
+            document.querySelector(".tab-content.active .exercicio").textContent = "Treino intervalado finalizado! 🎉";
+            document.querySelector(".tab-content.active .cronometro").textContent = "00:00";
+            document.querySelector(".tab-content.active .progresso").textContent = "";
             document.getElementById("final-treino").style.display = "block";
             return;
           }
           emTiro = true;
           tempoRestante = tempoTiro;
-          document.querySelector(".exercicio").textContent = `Tiro ${cicloAtual} de ${quantidadeCiclos}`;
-          document.querySelector(".progresso").textContent = "Tiro em andamento";
+          document.querySelector(".tab-content.active .exercicio").textContent = `Tiro ${cicloAtual} de ${quantidadeCiclos}`;
+          document.querySelector(".tab-content.active .progresso").textContent = "Tiro em andamento";
         }
         galo.pause();
         galo.currentTime = 0;
@@ -211,9 +211,9 @@ function pausarTreino() {
 function reiniciarTreino() {
   clearInterval(intervalo);
   document.getElementById("final-treino").style.display = "none";
-  document.querySelector(".exercicio").textContent = "Clique em \"Iniciar\"";
-  document.querySelector(".cronometro").textContent = "00:00";
-  document.querySelector(".progresso").textContent = "";
+  document.querySelector(".tab-content.active .exercicio").textContent = "Clique em \"Iniciar\"";
+  document.querySelector(".tab-content.active .cronometro").textContent = "00:00";
+  document.querySelector(".tab-content.active .progresso").textContent = "";
   emPausa = false;
   indice = 0;
 }
