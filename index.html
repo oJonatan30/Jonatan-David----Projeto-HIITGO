@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <title>HIITGO 💪</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 🧠 ÍCONE DO SITE (favicon) -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- 🎨 Estilo -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- 🧩 Ícones do Google -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <!-- ⚙️ Script principal -->
   <script defer>
+    let nomeUsuario = "";
+
     document.addEventListener("DOMContentLoaded", () => {
       // Alternância de abas
       const tabButtons = document.querySelectorAll('.tab-button');
@@ -36,6 +47,24 @@
         iconeTema.textContent = modoEscuroAtivo ? "light_mode" : "dark_mode";
         localStorage.setItem("tema", modoEscuroAtivo ? "escuro" : "claro");
       });
+
+      // Entrada do nome e ocultar tela de boas-vindas
+      document.getElementById("entrar-app").addEventListener("click", () => {
+        const input = document.getElementById("nome-usuario");
+        nomeUsuario = input.value.trim();
+
+        if (!nomeUsuario) {
+          alert("Por favor, digite seu nome para começar.");
+          return;
+        }
+
+        document.getElementById("boas-vindas").classList.add("fade-out");
+      });
+
+      // Função global para mensagem final
+      window.mensagemFinal = function(texto) {
+        return nomeUsuario ? `Parabéns, ${nomeUsuario}! ${texto}` : texto;
+      };
     });
   </script>
 </head>
