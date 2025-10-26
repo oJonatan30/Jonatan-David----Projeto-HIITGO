@@ -6,10 +6,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <script src="script.js" defer></script>
+  <script defer>
+    let nomeUsuario = "";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Alternância de abas
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const target = button.getAttribute('data-tab');
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          button.classList.add('active');
+          document.getElementById(target).classList.add('active');
+        });
+      });
+
+      // Alternância de tema
+      const botaoTema = document.getElementById("toggle-tema");
+      const iconeTema = document.getElementById("icone-tema");
+
+      if (localStorage.getItem("tema") === "escuro") {
+        document.body.classList.add("dark-mode");
+        iconeTema.textContent = "light_mode";
+      }
+
+      botaoTema.addEventListener("click", () => {
+        const modoEscuroAtivo = document.body.classList.toggle("dark-mode");
+        iconeTema.textContent = modoEscuroAtivo ? "light_mode" : "dark_mode";
+        localStorage.setItem("tema", modoEscuroAtivo ? "escuro" : "claro");
+      });
+
+      // Entrada do nome e ocultar tela de boas-vindas
+      document.getElementById("entrar-app").addEventListener("click", () => {
+        const input = document.getElementById("nome-usuario");
+        nomeUsuario = input.value.trim();
+
+        if (!nomeUsuario) {
+          alert("Por favor, digite seu nome para começar.");
+          return;
+        }
+
+        document.getElementById("boas-vindas").classList.add("fade-out");
+      });
+
+      // Função global para mensagem final
+      window.mensagemFinal = function(texto) {
+        return nomeUsuario ? `Parabéns, ${nomeUsuario}! ${texto}` : texto;
+      };
+    });
+  </script>
 </head>
 <body>
-  <div id="boas-vindas">Bem-vindo ao HIITGO 💪</div>
+  <!-- 👋 Tela de boas-vindas -->
+  <div id="boas-vindas">
+    <h2>Bem-vindo ao HIITGO 💪</h2>
+    <p>Digite seu nome para começar:</p>
+    <input type="text" id="nome-usuario" placeholder="Seu nome" />
+    <button id="entrar-app">Entrar</button>
+  </div>
 
   <h1>HIITGO 💪</h1>
 
@@ -34,9 +91,7 @@
       <button onclick="pausarTreino()">Pausar</button>
       <button onclick="reiniciarTreino()">Reiniciar</button>
     </div>
-    <div id="barra-progresso" class="barra-progresso">
-      <!-- segmentos serão gerados via JS -->
-    </div>
+    <div id="barra-progresso" class="barra-progresso"></div>
   </div>
 
   <!-- Aba: Treino Personalizado -->
@@ -45,7 +100,6 @@
     <p class="cronometro">00:00</p>
     <p class="progresso"></p>
     <div id="barra-progresso-personalizado" class="barra-progresso"></div>
-
 
     <h2>Monte seu treino personalizado</h2>
     <form id="form-treino">
@@ -66,7 +120,6 @@
     <p class="progresso"></p>
     <div id="barra-progresso-hiit" class="barra-progresso"></div>
 
-
     <h2>Treino Intervalado HIIT</h2>
     <label for="tempo-tiro">Tempo do tiro (segundos):</label>
     <input type="number" id="tempo-tiro" required>
@@ -79,40 +132,11 @@
 
   <!-- Tela final -->
   <div id="final-treino" style="display: none;">
-    <h2>🏁 Parabéns, treino concluído!</h2>
+    <h2 class="exercicio">🏁 Parabéns, treino concluído!</h2>
     <p>Você mandou bem! 💪</p>
     <button onclick="reiniciarTreino()">Novo Treino</button>
   </div>
 
   <audio id="galo-audio" src="galo.mp3" preload="auto"></audio>
-
-  <script>
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const target = button.getAttribute('data-tab');
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        tabContents.forEach(content => content.classList.remove('active'));
-        button.classList.add('active');
-        document.getElementById(target).classList.add('active');
-      });
-    });
-
-    const botaoTema = document.getElementById("toggle-tema");
-    const iconeTema = document.getElementById("icone-tema");
-
-    if (localStorage.getItem("tema") === "escuro") {
-      document.body.classList.add("dark-mode");
-      iconeTema.textContent = "light_mode";
-    }
-
-    botaoTema.addEventListener("click", () => {
-      const modoEscuroAtivo = document.body.classList.toggle("dark-mode");
-      iconeTema.textContent = modoEscuroAtivo ? "light_mode" : "dark_mode";
-      localStorage.setItem("tema", modoEscuroAtivo ? "escuro" : "claro");
-    });
-  </script>
 </body>
 </html>
