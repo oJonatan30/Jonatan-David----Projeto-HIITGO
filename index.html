@@ -3,21 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <title>HIITGO 💪</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style>
+    body {
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    #toggle-tema {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin: 0 auto 20px auto;
+      font-weight: bold;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      transition: transform 0.3s ease;
+    }
+
+    .dark-mode .material-symbols-outlined {
+      transform: rotate(180deg);
+    }
+
+    #boas-vindas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #2b6cb0, #2c5282);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      z-index: 9999;
+      animation: fadeOut 2s ease forwards;
+      animation-delay: 2s;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div id="boas-vindas">Bem-vindo ao HIITGO 💪</div>
+
   <h1>HIITGO 💪</h1>
 
-  <!-- Treino padrão -->
-  <div id="treino">
-    <h2 id="exercicio">Clique em "Iniciar"</h2>
-    <p id="cronometro">00:00</p>
-    <p id="progresso"></p>
-    <button onclick="iniciarTreino()">Iniciar Treino Padrão</button>
+  <button id="toggle-tema">
+    <span class="material-symbols-outlined" id="icone-tema">dark_mode</span>
+    Alternar Modo Escuro
+  </button>
+
+  <div class="tabs">
+    <button class="tab-button active" data-tab="padrao">Treino Padrão</button>
+    <button class="tab-button" data-tab="personalizado">Personalizado</button>
+    <button class="tab-button" data-tab="hiit">HIIT Intervalado</button>
   </div>
 
-  <!-- Treino personalizado -->
-  <section id="personalizado">
+  <!-- Aba: Treino Padrão -->
+  <div id="padrao" class="tab-content active">
+    <div id="treino">
+      <h2 id="exercicio">Clique em "Iniciar"</h2>
+      <p id="cronometro">00:00</p>
+      <p id="progresso"></p>
+      <button onclick="iniciarTreino()">Iniciar Treino Padrão</button>
+      <button onclick="pausarTreino()">Pausar</button>
+      <button onclick="reiniciarTreino()">Reiniciar</button>
+    </div>
+    <ul id="lista-exercicios">
+      <li>Polichinelo - 30s</li>
+      <li>Descanso - 15s</li>
+      <li>Agachamento - 30s</li>
+      <li>Descanso - 15s</li>
+      <li>Corrida no lugar - 30s</li>
+    </ul>
+  </div>
+
+  <!-- Aba: Treino Personalizado -->
+  <div id="personalizado" class="tab-content">
     <h2>Monte seu treino personalizado</h2>
     <form id="form-treino">
       <label for="nome-exercicio">Exercício:</label>
@@ -26,12 +101,13 @@
       <input type="number" id="tempo-exercicio" required>
       <button type="button" onclick="adicionarExercicio()">Adicionar</button>
     </form>
-
     <ul id="lista-personalizada"></ul>
     <button onclick="iniciarTreinoPersonalizado()">Iniciar Treino Personalizado</button>
+  </div>
 
-    <!-- Treino intervalado -->
-    <h3>Treino Intervalado</h3>
+  <!-- Aba: Treino Intervalado HIIT -->
+  <div id="hiit" class="tab-content">
+    <h2>Treino Intervalado HIIT</h2>
     <label for="tempo-tiro">Tempo do tiro (segundos):</label>
     <input type="number" id="tempo-tiro" required>
     <label for="tempo-descanso">Tempo de descanso (segundos):</label>
@@ -39,28 +115,46 @@
     <label for="quantidade-ciclos">Quantidade de ciclos:</label>
     <input type="number" id="quantidade-ciclos" required>
     <button onclick="iniciarTreinoIntervalado()">Iniciar Treino Intervalado</button>
-  </section>
+  </div>
 
-  <!-- Lista de exercícios padrão -->
-  <ul id="lista-exercicios">
-    <li>Polichinelo - 30s</li>
-    <li>Descanso - 15s</li>
-    <li>Agachamento - 30s</li>
-    <li>Descanso - 15s</li>
-    <li>Corrida no lugar - 30s</li>
-  </ul>
-
-  <!-- Tela final de encerramento do treino -->
+  <!-- Tela final -->
   <div id="final-treino" style="display: none;">
     <h2>🏁 Parabéns, treino concluído!</h2>
     <p>Você mandou bem! 💪</p>
     <button onclick="reiniciarTreino()">Novo Treino</button>
   </div>
 
-  <!-- Som do galo -->
   <audio id="galo-audio" src="galo.mp3" preload="auto"></audio>
 
-  <!-- Script principal -->
   <script src="script.js"></script>
+
+  <script>
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-tab');
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+
+    const botaoTema = document.getElementById("toggle-tema");
+    const iconeTema = document.getElementById("icone-tema");
+
+    if (localStorage.getItem("tema") === "escuro") {
+      document.body.classList.add("dark-mode");
+      iconeTema.textContent = "light_mode";
+    }
+
+    botaoTema.addEventListener("click", () => {
+      const modoEscuroAtivo = document.body.classList.toggle("dark-mode");
+      iconeTema.textContent = modoEscuroAtivo ? "light_mode" : "dark_mode";
+      localStorage.setItem("tema", modoEscuroAtivo ? "escuro" : "claro");
+    });
+  </script>
 </body>
 </html>
