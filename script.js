@@ -52,11 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
     treino = treinoPadrao;
     indice = 0;
     emPausa = false;
+    resetarBotaoPausa();
     gerarSegmentos(treino.length, "barra-progresso");
     iniciarExecucao();
   }
 
   function iniciarTreinoPersonalizado() {
+    resetarBotaoPausa();
     const lista = document.querySelectorAll("#lista-personalizada li");
     if (lista.length === 0) {
       alert("Adicione pelo menos um exercício personalizado.");
@@ -210,13 +212,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function pausarTreino() {
-    emPausa = true;
-  }
+  emPausa = !emPausa;
+  const botaoPausa = document.querySelector(".tab-content.active button[onclick='pausarTreino()']"); 
 
+  if (botaoPausa) {
+    botaoPausa.textContent = emPausa ? "Continuar" : "Pausar";
+    botaoPausa.style.backgroundColor = emPausa ? "#ed8936" : ""; 
+  }
+}
+
+function resetarBotaoPausa() {
+  const botoes = document.querySelectorAll("button[onclick='pausarTreino()']");
+  botoes.forEach(btn => {
+    btn.textContent = "Pausar";
+    btn.style.backgroundColor = ""; // Remove a cor laranja se tiver colocado
+  });
+}
   function reiniciarTreino() {
     clearInterval(intervalo);
     indice = 0;
     emPausa = false;
+    resetarBotaoPausa();
     document.getElementById("final-treino").style.display = "none";
     document.querySelector(".tab-content.active .exercicio").textContent = "Clique em \"Iniciar\"";
     document.querySelector(".tab-content.active .cronometro").textContent = "00:00";
